@@ -16,6 +16,8 @@
   outputs = { self, nixpkgs, nur, home-manager, sops-nix, impermanence, ... }@attrs:
     let
       system = "x86_64-linux";
+      pkgs = import nixpkgs { system = "x86_64-linux"; };
+
       nur-no-pkgs = import nur {
         nurpkgs = import nixpkgs { system = "x86_64-linux"; };
       };
@@ -72,6 +74,10 @@
             };
           }
         ];
+      };
+
+      checks.x86_64-linux = {
+        systemd-email-notify = import ./tests/systemd-email-notify.nix { inherit pkgs; };
       };
     };
 }
