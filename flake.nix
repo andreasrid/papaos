@@ -32,6 +32,44 @@
               (builtins.attrNames (builtins.readDir path)));
 
     in {
+      nixosConfigurations.scorpion = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = attrs;
+
+        modules = [
+          ./hosts/scorpion/configuration.nix
+          ./config/profiles/desktop.nix
+          ./config/xfce.nix
+          ./config/security/pam-u2f.nix
+          ./config/users/root
+          ./config/users/hermann
+          home-manager.nixosModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
+          {
+            nixpkgs.overlays = my-overlays ++ [
+              nur.overlay
+            ];
+            networking = {
+              hostName = "scorpion";
+            };
+
+            services.openssh = {
+              enable = true;
+              settings = {
+                PermitRootLogin = "yes";
+              };
+            };
+
+            services.xserver.displayManager.autoLogin = {
+              enable = true;
+              user = "hermann";
+            };
+          }
+        ];
+      };
+
       nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = attrs;
