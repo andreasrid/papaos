@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# -*- mode: shell-script -*-
+
+set -e
+
+USAGE="Usage: $0 <device>"
+if [ "$#" == "0" ]; then
+    echo "$USAGE"
+    exit 1
+fi
+
+dev=$1
+
+if [[ "${dev: -1}" =~ [0-9] ]]; then
+    partprefix="p"
+fi
+dev_boot=${dev}${partprefix}1
+dev_nixos=${dev}${partprefix}2
+
+__cleanup() {
+    EXITCODE=$?
+    if [[ $EXITCODE -ne 0 ]]; then
+	if [ -e /dev/mapper/encrypted ]; then
+	    cryptsetup close encrypted
+	fi
+    fi
+}
+ 
+trap __cleanup EXIT
+
+# Create a GPT partition table.
+parted ${dev} -- mklabel gpt
+
+# Create ESP (EFI system partition) as its /boot partition.
+parted ${dev} -- mkpart ESP fat32 1MiB 512MiB
+parted ${dev} -- set 1 esp on
+
+# Add the root partition. This will fill the disk except for the end part, where the swap will live, and the space left in front (512MiB) which will be used by the boot partition.
+parted ${dev} -- mkpart primary 512MiB 100%
+
+# For creating boot partitions: mkfs.fat. Again it’s recommended to assign a label to the boot partition: -n label. For example:
+mkfs.fat -F 32 -n boot ${dev_boot}
+
+# For initialising Ext4 partitions: mkfs.ext4. It is recommended that you assign a unique symbolic label to the file system using the option -L label, since this makes the file system configuration independent from device changes. For example:
+mkfs.btrfs -f  -L nixos ${dev_nixos}
+
+# Wait until the OS changed the partition table
+partprobe ${dev}
+
+# create BTRFS subvolumes
+mount /dev/disk/by-label/nixos /mnt
+btrfs subvolume create /mnt/@
+btrfs subvolume create /mnt/@nix
+btrfs subvolume create /mnt/@home
+btrfs subvolume create /mnt/@swap
+btrfs subvolume create /mnt/@persistent
+umount /mnt
+
+# Mount the target file system on which NixOS should be installed on /mnt, e.g.
+mount -o subvol=@,compress-force=zstd,noatime /dev/disk/by-label/nixos /mnt/
+mkdir -p /mnt/{boot,nix,var/log,home,.swap,persistent}
+mount /dev/disk/by-label/boot /mnt/boot
+mount -o subvol=@nix,compress-force=zstd,noatime /dev/disk/by-label/nixos /mnt/nix
+mount -o subvol=@persistent,compress-force=zstd,noatime /dev/disk/by-label/nixos /mnt/persistent
+mount -o subvol=@home,compress-force=zstd /dev/disk/by-label/nixos /mnt/home
+mount -o subvol=@swap,noatime,nodatacow /dev/disk/by-label/nixos /mnt/.swap
+
+# Swap file is created during startup or we can create this file before installation
+# nixos-generate-config does not detect active swapfiles
+# We have to manually add:
+# swapDevices = [
+#    {
+#      device = "/swap/swapfile";
+#      size = 1024 * 8;
+#    }
+
+create_swap_file() {
+    file=$1
+    size=$2
+    btrfs filesystem mkswapfile --size ${size} ${file}
+    swapon ${file}
+}
+create_swap_file /mnt/.swap/swapfile 64G
