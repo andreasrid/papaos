@@ -40,6 +40,7 @@
           ./hosts/scorpion/configuration.nix
           ./config/profiles/desktop.nix
           ./config/btrbk.nix
+          ./config/auto-upgrade.nix
           ./config/xfce.nix
           ./config/security/pam-u2f.nix
           ./config/users/root
