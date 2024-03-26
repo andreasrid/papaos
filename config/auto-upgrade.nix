@@ -4,9 +4,10 @@
   system.autoUpgrade = {
     enable = true;
     dates = "weekly";
-    flake = "https://github.com/andreasrid/papaos";
+    flake = "github:andreasrid/papaos";
     flags = [
       "--update-input" "nixpkgs"
+      "--no-write-lock-file"
     ];
     # Build  the  new  configuration  and make it the boot default, but do not activate it.
     # That is, the system continues to run the previous configuration until the next reboot.
