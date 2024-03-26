@@ -1,0 +1,23 @@
+# This example uses YAML anchors which allows reuse of multiple keys
+# without having to repeat yourself.
+# Also see https://github.com/Mic92/dotfiles/blob/master/nixos/.sops.yaml
+# for a more complex example.
+keys:
+  - &users:
+    - &conso 90B2DAB52AEDCC6C53CEDAEB968FB94BC32B25F5
+
+  # Use AGE for a host specific key.
+  # Run the following command to get the public key in AGE format
+  # ~ nix-shell -p ssh-to-age --run 'ssh-keyscan localhost | ssh-to-age'
+  # or use AGE TPM plugin (currently not supported by sops-nix)
+  # ~ age-plugin-tpm --generate -o hosts/$hostname/age-identity.txt
+  - &hosts:
+    - &scorpion age1s8waxccvwgrzpav4xr2u8pdsj4h33aztfcv52fhc2aahmqngvsjs7rqpe0
+
+creation_rules:
+  - path_regex: hosts/scorpion/secrets\.(yaml|json|env|ini)$
+    key_groups:
+    - pgp:
+      - *conso
+      age:
+      - *scorpion

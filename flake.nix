@@ -45,11 +45,19 @@
           ./config/security/pam-u2f.nix
           ./config/users/root
           ./config/users/hermann
+          ./config/security/monitoring.nix
+          ./modules/systemd-email-notify.nix
+          sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
           }
           {
+            sops = {
+              defaultSopsFile = ./hosts/scorpion/secrets.yaml;
+              age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+            };
+
             nixpkgs.overlays = my-overlays ++ [
               nur.overlay
             ];
