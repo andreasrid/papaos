@@ -39,6 +39,7 @@
         modules = [
           ./hosts/scorpion/configuration.nix
           ./config/profiles/desktop.nix
+          ./config/btrbk.nix
           ./config/xfce.nix
           ./config/security/pam-u2f.nix
           ./config/users/root

@@ -20,6 +20,12 @@
       fsType = "vfat";
     };
 
+  fileSystems."/.btr_pool" =
+    { device = "/dev/disk/by-uuid/dcb5b5bc-a1b7-4488-ae65-5cf70195357d";
+      fsType = "btrfs";
+      options = [ "subvolid=5" "compress-force=zstd" "noatime" ];
+    };
+
   fileSystems."/nix" =
     { device = "/dev/disk/by-uuid/dcb5b5bc-a1b7-4488-ae65-5cf70195357d";
       fsType = "btrfs";
