@@ -10,13 +10,13 @@ let
       #!/bin/sh
 
       ${pkgs.system-sendmail}/bin/sendmail -t <<ERRMAIL
-      To: $1
+      To: ${config.systemd.email-notify.mailTo}
       From: ${config.systemd.email-notify.mailFrom}
-      Subject: Status of service $2
+      Subject: Status of service $1
       Content-Transfer-Encoding: 8bit
       Content-Type: text/plain; charset=UTF-8
 
-      $(systemctl status --full "$2")
+      $(systemctl status --full "$1")
       ERRMAIL
     '';
 in
@@ -58,7 +58,7 @@ in
       description = "Sends a status mail via sendmail on service failures.";
       onFailure = mkForce [ ];
       serviceConfig = {
-        ExecStart = "${sendmail} ${config.systemd.email-notify.mailTo} %i";
+        ExecStart = "${sendmail} %i";
         Type = "oneshot";
       };
     };
