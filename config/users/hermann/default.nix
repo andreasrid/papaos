@@ -35,6 +35,10 @@
         # Disable Lock Screen - user has no authentication method like password
         "lock/enabled" = false;
       };
+      xfce4-power-manager = {
+        # set power button action to 4:=shutdown
+        "xfce4-power-manager/power-button-action" = 4;
+      };
 
       xfce4-xsettings = {
         "Net/ThemeName" = "Adwaita-dark";
