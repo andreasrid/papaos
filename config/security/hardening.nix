@@ -21,4 +21,11 @@
   # loading is disabled until the next reboot. Problems caused by delayed module
   # loading can be fixed by adding the module(s) in question to boot.kernelModules.
   security.lockKernelModules = false;
+
+  # Workaround: Apparmor service fails to start after nixos-rebuild switch
+  # https://github.com/NixOS/nixpkgs/issues/273164
+  security.apparmor.policies.dummy.profile = ''
+      /dummy {
+      }
+  '';
 }
