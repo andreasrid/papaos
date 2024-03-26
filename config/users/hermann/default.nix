@@ -24,7 +24,7 @@
     home.packages = with pkgs; [
       # After installing VideoDownloadHelper you have to run the following otherwise neither chromium nor FF couldn't find it:
       # path/to/net.downloadhelper.coapp install --user
-      nur.repos.wolfangaukang.vdhcoapp
+      nur.repos.milahu.vdhcoapp
     ];
 
     xfconf.settings = {
