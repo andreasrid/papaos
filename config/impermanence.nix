@@ -99,6 +99,9 @@ in
         "/etc/ssh"
         "/etc/NetworkManager/system-connections"
         { directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
+
+        # Keep DHCP Client Identifier, otherwise we will receive a new IP address after each reboot
+        "/var/db/dhcpcd"
       ];
       files = [
         "/etc/machine-id"
