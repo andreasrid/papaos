@@ -6,7 +6,7 @@
     dates = "weekly";
     flake = "github:andreasrid/papaos";
     flags = [
-      "--update-input" "nixpkgs"
+      "--recreate-lock-file"
       "--no-write-lock-file"
     ];
     # Build  the  new  configuration  and make it the boot default, but do not activate it.
