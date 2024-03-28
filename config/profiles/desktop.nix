@@ -29,6 +29,9 @@
       firefox
       chromium
       thunderbird
+      evince
+      gnome.eog
+      gnome.gedit
       pavucontrol
       mplayer
       cryfs
@@ -39,6 +42,9 @@
           en-science
           de
         ]))
+      libreoffice-qt
+      hunspell
+      hunspellDicts.de_DE
     ];
 
     programs.dconf.enable = true;
