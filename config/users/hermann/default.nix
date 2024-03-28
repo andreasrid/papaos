@@ -75,6 +75,15 @@
           rycee.firefox-addons.bitwarden
           rycee.firefox-addons.video-downloadhelper
 
+          (rycee.firefox-addons.buildFirefoxXpiAddon rec {
+            pname = "YT Ad Speedup - Skip Video Ads Faster";
+            version = "1.0.5";
+            addonId = "{8f5ec562-8beb-11ee-b9d1-0242ac120002}";
+            url = "https://addons.mozilla.org/firefox/downloads/file/4207941/yt_ad_speedup_skip_ads_faster-${version}.xpi";
+            sha256 = "90916e35902aae93125afd0292816dd8cd948467de5c1f7669b5fbf3bf14da79";
+            meta = {};
+          })
+
         ];
       };
     };
