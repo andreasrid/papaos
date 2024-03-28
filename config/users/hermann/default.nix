@@ -9,6 +9,7 @@
 
     extraGroups = [
       "wheel"
+      "audio"
     ];
     openssh.authorizedKeys.keys = [
       # Yubikey
