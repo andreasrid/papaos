@@ -55,7 +55,7 @@
           {
             sops = {
               defaultSopsFile = ./hosts/scorpion/secrets.yaml;
-              age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+              age.sshKeyPaths = [ "/persistent/etc/ssh/ssh_host_ed25519_key" ];
             };
 
             nixpkgs.overlays = my-overlays ++ [
