@@ -28,4 +28,11 @@
       /dummy {
       }
   '';
+
+  # Fix logrotate config fails due to missing group 30000
+  # security.unprivilegedUsernsClone is set to false in nixpkgs/nixos/modules/profiles/hardened.nix:34
+  # https://discourse.nixos.org/t/logrotate-config-fails-due-to-missing-group-30000/28501
+  # https://github.com/NixOS/nix/issues/8502
+  # https://github.com/NixOS/nixpkgs/issues/287194
+  security.unprivilegedUsernsClone = true;
 }
