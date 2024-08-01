@@ -31,7 +31,7 @@
       thunderbird
       evince
       gnome.eog
-      gnome.gedit
+      gedit
       pavucontrol
       mplayer
       cryfs

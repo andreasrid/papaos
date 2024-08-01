@@ -14,5 +14,5 @@
   };
   
   # Configure keymap in X11
-  services.xserver.layout = "de";
+  services.xserver.xkb.layout = "de";
 }
