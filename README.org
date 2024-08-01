@@ -1,0 +1,7 @@
+* Managing Secrets
+** sops-nix
+In order to add, change or delete secrets use the =sops <file>= command. It opens an =$EDITOR= and allows in-place changes.
+
+#+begin_src bash
+nix-shell -p sops --run "sops hosts/scorpion/secrets.yaml"
+#+end_src
