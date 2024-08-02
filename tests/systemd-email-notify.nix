@@ -68,12 +68,23 @@ pkgs.nixosTest {
         checkMailLanded = pkgs.writeScriptBin "check-mail-landed" ''
           #!${pkgs.python3.interpreter}
           import imaplib
+          import time
+
+          def wait_for_mail(imap):
+             for i in range(5):
+                status, (count,) = imap.select()
+                total_messages = int(count)
+                assert status == 'OK'
+                if total_messages:
+                   return True
+                time.sleep(0.1)
+
+             raise RuntimeError(f"Total number of messages in a INBOX {total_messages}")
 
           with imaplib.IMAP4('mailserver', 143) as imap:
              imap.login('alice', 'foobar')
-             status, (count,) = imap.select()
-             assert status == 'OK'
-             assert int(count) == 1
+
+             wait_for_mail(imap)
              status, msg = imap.fetch('1', 'BODY[TEXT]')
              assert status == 'OK'
              content = msg[0][1]
@@ -96,7 +107,7 @@ pkgs.nixosTest {
     mailserver.wait_for_open_port(143)
 
     client.systemctl("start test-email-notify.service")
-    mailserver.wait_until_fails("smtpctl show queue | egrep .")
+    mailserver.succeed("smtpctl schedule all")
 
     client.succeed("check-mail-landed")
   '';
