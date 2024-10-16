@@ -4,6 +4,8 @@
   system.autoUpgrade = {
     enable = true;
     dates = "weekly";
+    randomizedDelaySec = "20";
+    fixedRandomDelay = true;
     flake = "github:andreasrid/papaos";
     flags = [
       "--recreate-lock-file"
