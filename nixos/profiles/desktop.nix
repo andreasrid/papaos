@@ -32,7 +32,7 @@
       chromium
       thunderbird
       evince
-      gnome.eog
+      eog
       gedit
       pavucontrol
       mplayer

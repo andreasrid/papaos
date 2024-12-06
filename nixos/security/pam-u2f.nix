@@ -27,7 +27,7 @@ in
       lightdm.u2fAuth = true;
       xfce4-screensaver.u2fAuth = true;
     };
-    u2f = {
+    u2f.settings = {
       authFile = pkgs.writeText "u2f_mapping" (lib.concatStringsSep "\n" u2f_keys);
       # By default origin is set to pam://$HOSTNAME
       # We set here someting else to use u2f_keys on all my machines.

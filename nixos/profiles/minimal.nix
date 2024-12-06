@@ -8,7 +8,7 @@
 
   config = {
     environment.systemPackages = with pkgs; [
-      rxvt_unicode.terminfo
+      rxvt-unicode-unwrapped.terminfo
       vim
       emacs
       lsof
