@@ -12,7 +12,7 @@ in
   options.environment.impermanence = {
     enable = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = ''
         Whether to enable clean root mount.
       '';

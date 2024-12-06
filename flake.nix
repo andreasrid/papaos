@@ -38,14 +38,14 @@
 
         modules = [
           ./hosts/scorpion/configuration.nix
-          ./config/profiles/desktop.nix
-          ./config/btrbk.nix
-          ./config/auto-upgrade.nix
-          ./config/xfce.nix
-          ./config/security/pam-u2f.nix
-          ./config/users/root
-          ./config/users/hermann
-          ./config/security/monitoring.nix
+          ./nixos/profiles/desktop.nix
+          ./nixos/btrbk.nix
+          ./nixos/auto-upgrade.nix
+          ./nixos/xfce.nix
+          ./nixos/security/pam-u2f.nix
+          ./nixos/users/root
+          ./nixos/users/hermann
+          ./nixos/security/monitoring.nix
           ./modules/systemd-email-notify.nix
           sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager {
@@ -86,10 +86,10 @@
 
         modules = [
           "${nixpkgs}/nixos/modules/virtualisation/qemu-vm.nix"
-          ./config/profiles/desktop.nix
-          ./config/xfce.nix
-          ./config/security/pam-u2f.nix
-          ./config/users/hermann
+          ./nixos/profiles/desktop.nix
+          ./nixos/xfce.nix
+          ./nixos/security/pam-u2f.nix
+          ./nixos/users/hermann
           {
             nixpkgs.overlays = my-overlays ++ [
               nur.overlay

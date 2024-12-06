@@ -4,6 +4,7 @@
     ./minimal.nix
     ../urxvt.nix
     ../printing
+    ../impermanence.nix
   ];
 
   config = {

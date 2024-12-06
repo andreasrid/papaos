@@ -6,14 +6,16 @@
 {
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
-      ../../config/impermanence.nix
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  environment.impermanence.device = "/dev/disk/by-uuid/dcb5b5bc-a1b7-4488-ae65-5cf70195357d";
+  environment.impermanence = {
+    enable = true;
+    device = "/dev/disk/by-uuid/dcb5b5bc-a1b7-4488-ae65-5cf70195357d";
+  };
 
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/F113-143A";
