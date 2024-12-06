@@ -3,6 +3,7 @@
   imports = [
     ./minimal.nix
     ../urxvt.nix
+    ../sound.nix
     ../printing
     ../impermanence.nix
   ];
