@@ -47,6 +47,7 @@
       libreoffice-qt
       hunspell
       hunspellDicts.de_DE
+      kdePackages.k3b
     ];
 
     programs.dconf.enable = true;
@@ -57,8 +58,8 @@
     # To fix cdrecord error message "permission denied" open
     # k3b settings -> Porgrams -> select cdrecord in /run/wrappers/bin/cdrecord
     # https://github.com/NixOS/nixpkgs/issues/19154#issuecomment-647045107
-    services.udisks2.enable = true; # needed by k3b
-    programs.k3b.enable = true;
+    #services.udisks2.enable = true; # needed by k3b
+    programs.k3b.enable = false;
 
     systemd.user.services.yubikey-touch-detector = {
       path = with pkgs; [
