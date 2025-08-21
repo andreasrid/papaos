@@ -65,7 +65,7 @@
           "signon.rememberSignons" = false;
         };
 
-        extensions = with pkgs.nur.repos; [
+        extensions.packages = with pkgs.nur.repos; [
           # Note that it is necessary to manually enable these extensions
           # inside Firefox after the first installation.
           rycee.firefox-addons.languagetool

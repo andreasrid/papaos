@@ -59,7 +59,7 @@
             };
 
             nixpkgs.overlays = my-overlays ++ [
-              nur.overlay
+              nur.overlays.default
             ];
             networking = {
               hostName = "scorpion";
@@ -92,7 +92,7 @@
           ./nixos/users/hermann
           {
             nixpkgs.overlays = my-overlays ++ [
-              nur.overlay
+              nur.overlays.default
             ];
           }
           home-manager.nixosModules.home-manager {
