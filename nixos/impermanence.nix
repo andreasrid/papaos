@@ -57,12 +57,16 @@ in
     };
 
     boot.initrd.postDeviceCommands = lib.mkAfter ''
+      function pause(){
+        read -s -n 1 -p "Press any key to continue ..."
+        echo
+      }
       mkdir /btrfs_tmp
       mount ${cfg.device} /btrfs_tmp
       if [[ -e /btrfs_tmp/${cfg.subvolume} ]]; then
         mkdir -p /btrfs_tmp/${cfg.subvolume}_old
         timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/${cfg.subvolume})" "+%Y-%m-%-d_%H:%M:%S")
-        mv /btrfs_tmp/${cfg.subvolume} "/btrfs_tmp/${cfg.subvolume}_old/$timestamp"
+        mv "/btrfs_tmp/${cfg.subvolume}" "/btrfs_tmp/${cfg.subvolume}_old/$timestamp" || pause
       fi
 
       delete_subvolume_recursively() {
@@ -70,14 +74,20 @@ in
         for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
           delete_subvolume_recursively "/btrfs_tmp/$i"
         done
-        echo btrfs subvolume delete "$1"
+
+        if [[ "$1" == "/btrfs_tmp/${cfg.subvolume}_old/*" ]]; then
+          btrfs subvolume delete "$1" || pause
+        else
+          echo "ERROR: subvolume \'$1\' out of range"
+          pause
+        fi
       }
 
-      for i in $(find /btrfs_tmp/${cfg.subvolume}_old/ -maxdepth 1 -mtime +30); do
+      for i in $(find "/btrfs_tmp/${cfg.subvolume}_old/" -mindepth 1 -maxdepth 1 -mtime +180); do
         delete_subvolume_recursively "$i"
       done
 
-      btrfs subvolume create /btrfs_tmp/${cfg.subvolume}
+      btrfs subvolume create "/btrfs_tmp/${cfg.subvolume}" || pause
       umount /btrfs_tmp
     '';
     #environment.etc = {
