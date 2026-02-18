@@ -1,4 +1,10 @@
-{ config, lib, pkgs, impermanence, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  impermanence,
+  ...
+}:
 
 with lib;
 let
@@ -33,7 +39,10 @@ in
     };
 
     extraMountOptions = mkOption {
-      default = [ "compress-force=zstd" "noatime" ];
+      default = [
+        "compress-force=zstd"
+        "noatime"
+      ];
       type = with types; nonEmptyListOf str;
       description = ''
         Extra Mount options.
@@ -91,8 +100,8 @@ in
       umount /btrfs_tmp
     '';
     #environment.etc = {
-      #"group".source = "/persistent/etc/group";
-      #"passwd".source = "/persistent/etc/passwd";
+    #"group".source = "/persistent/etc/group";
+    #"passwd".source = "/persistent/etc/passwd";
     #  "shadow".source = "/persistent/etc/shadow";
     #};
 
@@ -108,7 +117,12 @@ in
         "/var/lib/systemd"
         "/etc/ssh"
         "/etc/NetworkManager/system-connections"
-        { directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
+        {
+          directory = "/var/lib/colord";
+          user = "colord";
+          group = "colord";
+          mode = "u=rwx,g=rx,o=";
+        }
 
         # Keep DHCP Client Identifier, otherwise we will receive a new IP address after each reboot
         "/var/db/dhcpcd"

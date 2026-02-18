@@ -1,11 +1,17 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   # Disable password authentication
   users.users.btrbk.hashedPassword = "*";
 
   # Run backup only manually. Instead of a daily backup use Systemd service to create snapshots only.
   # Replace 'run' with 'snapshot':
-  systemd.services.btrbk-btrbk.serviceConfig.ExecStart = lib.mkForce "${pkgs.btrbk}/bin/btrbk -c /etc/btrbk/btrbk.conf snapshot --preserve ${config.networking.hostName}";
+  systemd.services.btrbk-btrbk.serviceConfig.ExecStart =
+    lib.mkForce "${pkgs.btrbk}/bin/btrbk -c /etc/btrbk/btrbk.conf snapshot --preserve ${config.networking.hostName}";
 
   services.btrbk = {
     extraPackages = [ pkgs.lz4 ];
@@ -45,8 +51,10 @@
           group = "scorpion";
 
           subvolume = {
-            "@home" = {};
-            "@persistent" = { target_preserve_min = "latest"; };
+            "@home" = { };
+            "@persistent" = {
+              target_preserve_min = "latest";
+            };
           };
         };
       };

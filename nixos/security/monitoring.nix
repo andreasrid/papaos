@@ -1,9 +1,14 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  sops.secrets."emailNotify/mailTo" = {};
-  sops.secrets."emailNotify/mailFrom" = {};
-  sops.secrets."emailNotify/smtpPassword" = {};
+  sops.secrets."emailNotify/mailTo" = { };
+  sops.secrets."emailNotify/mailFrom" = { };
+  sops.secrets."emailNotify/smtpPassword" = { };
 
   systemd.email-notify = {
     enable = true;

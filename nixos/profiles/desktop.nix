@@ -19,12 +19,12 @@
 
     services = {
       openssh = {
-	      enable = true;
+        enable = true;
         extraConfig = "
           MaxAuthTries=10
         ";
-	    };
-	  };
+      };
+    };
 
     environment.systemPackages = with pkgs; [
       usbutils
@@ -37,13 +37,14 @@
       pavucontrol
       mplayer
       cryfs
-      (aspellWithDicts (dicts: with dicts;
-        [
+      (aspellWithDicts (
+        dicts: with dicts; [
           en
           en-computers
           en-science
           de
-        ]))
+        ]
+      ))
       libreoffice-qt
       hunspell
       hunspellDicts.de_DE

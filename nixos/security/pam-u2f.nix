@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 ## Test PAM configuration
 # Test user and/or sudo authentication. Replace 'root' or 'conso' by your users account name.

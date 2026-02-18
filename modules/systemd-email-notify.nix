@@ -1,24 +1,28 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
 let
   cfg = config.systemd.email-notify;
 
-  sendmail = pkgs.writeScript "sendmail"
-    ''
-      #!/bin/sh
+  sendmail = pkgs.writeScript "sendmail" ''
+    #!/bin/sh
 
-      ${pkgs.system-sendmail}/bin/sendmail -t <<ERRMAIL
-      To: ${config.systemd.email-notify.mailTo}
-      From: ${config.systemd.email-notify.mailFrom}
-      Subject: Status of service $1
-      Content-Transfer-Encoding: 8bit
-      Content-Type: text/plain; charset=UTF-8
+    ${pkgs.system-sendmail}/bin/sendmail -t <<ERRMAIL
+    To: ${config.systemd.email-notify.mailTo}
+    From: ${config.systemd.email-notify.mailFrom}
+    Subject: Status of service $1
+    Content-Transfer-Encoding: 8bit
+    Content-Type: text/plain; charset=UTF-8
 
-      $(systemctl status --full "$1")
-      ERRMAIL
-    '';
+    $(systemctl status --full "$1")
+    ERRMAIL
+  '';
 in
 {
   options = {
@@ -45,11 +49,11 @@ in
     };
 
     systemd.services = mkOption {
-      type = with types; attrsOf (
-        submodule {
+      type =
+        with types;
+        attrsOf (submodule {
           config.onFailure = [ "email-notify@%n.service" ];
-        }
-      );
+        });
     };
   };
 

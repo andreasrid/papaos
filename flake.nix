@@ -2,18 +2,27 @@
   description = "Nixos configuration";
 
   inputs = {
-    nixpkgs.url = github:nixos/nixpkgs/nixos-25.11;
-    nur.url = github:nix-community/NUR;
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nur.url = "github:nix-community/NUR";
     sops-nix.url = "github:Mic92/sops-nix";
     impermanence.url = "github:nix-community/impermanence";
 
     home-manager = {
-      url = github:nix-community/home-manager/release-25.11;
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, sops-nix, impermanence, ... }@attrs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nur,
+      home-manager,
+      sops-nix,
+      impermanence,
+      ...
+    }@attrs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { system = "x86_64-linux"; };
@@ -34,12 +43,14 @@
         let
           path = ./overlays;
         in
-          map (e: import "${path}/${e}")
-            (builtins.filter (n: builtins.match ".*\\.nix" n != null
-                                 || builtins.pathExists (path + ("/" + n + "/default.nix")))
-              (builtins.attrNames (builtins.readDir path)));
+        map (e: import "${path}/${e}") (
+          builtins.filter (
+            n: builtins.match ".*\\.nix" n != null || builtins.pathExists (path + ("/" + n + "/default.nix"))
+          ) (builtins.attrNames (builtins.readDir path))
+        );
 
-    in {
+    in
+    {
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
 
       nixosConfigurations.scorpion = nixpkgs.lib.nixosSystem {
@@ -58,7 +69,8 @@
           ./nixos/security/monitoring.nix
           ./modules/systemd-email-notify.nix
           sops-nix.nixosModules.sops
-          home-manager.nixosModules.home-manager {
+          home-manager.nixosModules.home-manager
+          {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
           }
@@ -105,7 +117,8 @@
               nur.overlays.default
             ];
           }
-          home-manager.nixosModules.home-manager {
+          home-manager.nixosModules.home-manager
+          {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
           }

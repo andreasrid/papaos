@@ -1,7 +1,13 @@
 # Documentation:
 # https://dataswamp.org/~solene/2022-01-13-nixos-hardened.html
 
-{ config, lib, pkgs, modulesPath, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
+}:
 {
   imports = [
     "${modulesPath}/profiles/hardened.nix"
@@ -25,8 +31,8 @@
   # Workaround: Apparmor service fails to start after nixos-rebuild switch
   # https://github.com/NixOS/nixpkgs/issues/273164
   security.apparmor.policies.dummy.profile = ''
-      /dummy {
-      }
+    /dummy {
+    }
   '';
 
   # Fix logrotate config fails due to missing group 30000

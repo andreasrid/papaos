@@ -2,7 +2,8 @@
 # $ nix flake init
 # $ git add flake.nix
 
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   nix = {
     extraOptions = ''
       experimental-features = nix-command flakes
