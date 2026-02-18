@@ -9,7 +9,7 @@
   system.autoUpgrade = {
     enable = true;
     dates = "weekly";
-    randomizedDelaySec = "20";
+    randomizedDelaySec = "2min";
     fixedRandomDelay = true;
     flake = "github:andreasrid/papaos";
     flags = [
